@@ -1,10 +1,12 @@
 import 'package:expense_tracker/app/modules/auth/widgets/build_textfield.dart';
+import 'package:expense_tracker/app/routes/app_pages.dart';
 import 'package:expense_tracker/core/app_images.dart';
 import 'package:expense_tracker/core/theme/colors.dart';
 import 'package:expense_tracker/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -74,7 +76,9 @@ class _LoginViewState extends State<LoginView> {
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed(Routes.SIGNUP);
+                    },
                     child: Text(
                       'Sign Up',
                       style: TextStyle(
