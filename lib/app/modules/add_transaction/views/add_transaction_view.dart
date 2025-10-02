@@ -1,4 +1,5 @@
 import 'package:expense_tracker/app/modules/add_transaction/controllers/add_transaction_controller.dart';
+import 'package:expense_tracker/app/modules/add_transaction/widgets/transaction_button.dart';
 import 'package:expense_tracker/app/modules/auth/widgets/build_textfield.dart';
 import 'package:expense_tracker/core/theme/colors.dart';
 import 'package:expense_tracker/core/widgets/custom_button.dart';
@@ -29,6 +30,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
     Icons.car_crash_sharp,
   ];
   final titleList = ["Food", "Salary", "Utilities", "Transport"];
+  final transactionList = ["Expense", "Income"];
 
   @override
   void dispose() {
@@ -69,6 +71,31 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               ),
               Gap(20.h),
 
+              //expense and income button
+              Obx(() {
+                return Row(
+                  children: List.generate(transactionList.length, (index) {
+                    final type = transactionList[index].toLowerCase();
+                    final isSelected = controller.selectedType.value == type;
+
+                    return Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 5.w),
+                        child: transactionButton(
+                          onTap: () => controller.selectType(type),
+                          buttonText: transactionList[index],
+                          backgroundColor: isSelected
+                              ? (type == 'income' ? Colors.green : Colors.red)
+                              : whiteColor,
+                          fontColor: isSelected ? Colors.white : greyColor,
+                        ),
+                      ),
+                    );
+                  }),
+                );
+              }),
+
+              Gap(20.h),
               //category section
               const Text(
                 'Category',

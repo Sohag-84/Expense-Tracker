@@ -7,6 +7,12 @@ class AddTransactionController extends GetxController {
 
   var selectedCategoryIndex = (-1).obs;
 
+  var selectedType = ''.obs;
+
+  void selectType(String type) {
+    selectedType.value = selectedType.value == type ? '' : type;
+  }
+
   Future<void> pickDate() async {
     DateTime? picked = await showDatePicker(
       context: Get.context!,
