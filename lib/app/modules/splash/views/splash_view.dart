@@ -1,3 +1,4 @@
+import 'package:expense_tracker/core/app_images.dart';
 import 'package:expense_tracker/core/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +21,7 @@ class SplashView extends GetView<SplashController> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image(image: AssetImage("assets/logo/logo.png"), height: 350.h),
+          Image(image: AssetImage(AppImages.appIcon), height: 350.h),
           Gap(20.h),
           LoadingAnimationWidget.inkDrop(color: primaryColor, size: 40.h),
         ],
