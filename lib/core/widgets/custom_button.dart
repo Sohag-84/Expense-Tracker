@@ -8,7 +8,6 @@ Widget customButton({
   double height = 45.0,
 }) {
   return Container(
-    width: double.infinity,
     height: height.h,
     alignment: Alignment.center,
     decoration: BoxDecoration(

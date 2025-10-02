@@ -7,6 +7,7 @@ Widget buildTextField({
   required String hintText,
   required IconData icon,
   bool isPassword = false,
+  TextInputType inputType = TextInputType.text,
 }) {
   return Container(
     height: 55.h,
@@ -26,6 +27,7 @@ Widget buildTextField({
     child: TextField(
       controller: controller,
       obscureText: isPassword,
+      keyboardType: inputType,
       decoration: InputDecoration(
         hintText: hintText,
         hintStyle: const TextStyle(color: Colors.grey),
@@ -34,7 +36,7 @@ Widget buildTextField({
             ? Icon(Icons.visibility_off, color: Colors.grey, size: 24.h)
             : null,
         border: InputBorder.none,
-        contentPadding: EdgeInsets.symmetric(vertical: 13.h, horizontal: 12.w),
+        contentPadding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 12.w),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: greyColor),
           borderRadius: BorderRadius.circular(10.r),

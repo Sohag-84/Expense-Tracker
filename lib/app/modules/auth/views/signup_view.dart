@@ -86,7 +86,7 @@ class _SignupViewState extends State<SignupView> {
               // Login Button
               customButton(onTap: () {}, buttonText: "Sign Up", height: 48.h),
               Gap(20.h),
-              // Don't have an account? Sign Up
+              // Already have an account? Sign Up
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

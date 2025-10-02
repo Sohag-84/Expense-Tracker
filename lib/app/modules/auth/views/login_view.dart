@@ -65,7 +65,13 @@ class _LoginViewState extends State<LoginView> {
               ),
               Gap(20.h),
               // Login Button
-              customButton(onTap: () {}, buttonText: "Login", height: 48.h),
+              customButton(
+                onTap: () {
+                  Get.toNamed(Routes.ADD_TRANSACTION);
+                },
+                buttonText: "Login",
+                height: 48.h,
+              ),
               Gap(20.h),
               // Don't have an account? Sign Up
               Row(

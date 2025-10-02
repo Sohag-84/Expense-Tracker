@@ -1,8 +1,10 @@
-import 'package:expense_tracker/app/modules/auth/views/signup_view.dart';
 import 'package:get/get.dart';
 
+import '../modules/add_transaction/bindings/add_transaction_binding.dart';
+import '../modules/add_transaction/views/add_transaction_view.dart';
 import '../modules/auth/bindings/auth_binding.dart';
 import '../modules/auth/views/login_view.dart';
+import '../modules/auth/views/signup_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
@@ -35,6 +37,11 @@ class AppPages {
       name: _Paths.SIGNUP,
       page: () => const SignupView(),
       binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.ADD_TRANSACTION,
+      page: () => const AddTransactionView(),
+      binding: AddTransactionBinding(),
     ),
   ];
 }
