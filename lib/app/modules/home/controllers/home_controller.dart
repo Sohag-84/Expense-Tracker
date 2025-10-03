@@ -55,4 +55,21 @@ class HomeController extends GetxController {
       isTransactionLoading.value = false;
     }
   }
+
+  Future<void> deleteTransaction({required String transactionId}) async {
+    try {
+      await firestore
+          .collection(userCollection)
+          .doc(currentUser!.uid)
+          .collection(transactionCollection)
+          .doc(transactionId)
+          .delete();
+
+      // remove locally
+      transactions.removeWhere((txn) => txn.id == transactionId);
+      calculateTotals();
+    } catch (e) {
+      Get.snackbar("Error", "Failed to delete transaction: $e");
+    }
+  }
 }

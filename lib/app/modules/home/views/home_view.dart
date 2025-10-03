@@ -102,19 +102,40 @@ class HomeView extends GetView<HomeController> {
                                 String formattedDate = DateFormat(
                                   'd MMM y',
                                 ).format(dateFromFirebase);
-                                return Padding(
-                                  padding: EdgeInsets.only(bottom: 10.0),
-                                  child: transactionHistoryContainer(
-                                    title: txn.title,
-                                    type: txn.type,
-                                    date: formattedDate,
-                                    amount: txn.amount,
-                                    transactionColor: txn.type == 'Income'
-                                        ? Colors.green
-                                        : Colors.red,
-                                    icon: txn.type == "Income"
-                                        ? Icons.add
-                                        : Icons.remove,
+
+                                return Dismissible(
+                                  key: Key(txn.id),
+                                  direction: DismissDirection.endToStart,
+                                  background: Container(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 20,
+                                    ),
+                                    alignment: Alignment.centerRight,
+                                    color: Colors.red,
+                                    child: Icon(
+                                      Icons.delete,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  onDismissed: (direction) async {
+                                    await controller.deleteTransaction(
+                                      transactionId: txn.id,
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.only(bottom: 10.0),
+                                    child: transactionHistoryContainer(
+                                      title: txn.title,
+                                      type: txn.type,
+                                      date: formattedDate,
+                                      amount: txn.amount,
+                                      transactionColor: txn.type == 'Income'
+                                          ? Colors.green
+                                          : Colors.red,
+                                      icon: txn.type == "Income"
+                                          ? Icons.add
+                                          : Icons.remove,
+                                    ),
                                   ),
                                 );
                               },
