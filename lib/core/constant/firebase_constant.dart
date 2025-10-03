@@ -8,3 +8,4 @@ User? currentUser = firebaseAuth.currentUser;
 
 //collectionName
 const userCollection = "users";
+const transactionCollection = "transactions";

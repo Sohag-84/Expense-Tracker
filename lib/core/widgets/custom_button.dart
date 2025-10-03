@@ -7,27 +7,27 @@ Widget customButton({
   required String buttonText,
   double height = 45.0,
 }) {
-  return Container(
-    height: height.h,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(15.r),
-      gradient: const LinearGradient(
-        colors: [blueColor, primaryColor, primaryColor],
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-      ),
-      boxShadow: [
-        BoxShadow(
-          color: blueColor.withValues(alpha: 0.3),
-          spreadRadius: 2,
-          blurRadius: 10,
-          offset: const Offset(0, 5),
+  return GestureDetector(
+    onTap: onTap,
+    child: Container(
+      height: height.h,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15.r),
+        gradient: const LinearGradient(
+          colors: [blueColor, primaryColor, primaryColor],
+          begin: Alignment.bottomLeft,
+          end: Alignment.topRight,
         ),
-      ],
-    ),
-    child: GestureDetector(
-      onTap: onTap,
+        boxShadow: [
+          BoxShadow(
+            color: blueColor.withValues(alpha: 0.3),
+            spreadRadius: 2,
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
       child: Text(
         buttonText,
         style: TextStyle(

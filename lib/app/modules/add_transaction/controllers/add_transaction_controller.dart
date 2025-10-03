@@ -1,4 +1,7 @@
+import 'package:expense_tracker/app/models/transaction_model.dart';
+import 'package:expense_tracker/core/constant/firebase_constant.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -7,10 +10,9 @@ class AddTransactionController extends GetxController {
 
   var selectedCategoryIndex = (-1).obs;
 
-  var selectedType = ''.obs;
-
-  void selectType(String type) {
-    selectedType.value = selectedType.value == type ? '' : type;
+  var selectedTypeIndex = (-1).obs;
+  void selectType(int index) {
+    selectedTypeIndex.value = index;
   }
 
   Future<void> pickDate() async {
@@ -33,5 +35,22 @@ class AddTransactionController extends GetxController {
   // change category index
   void selectCategory(int index) {
     selectedCategoryIndex.value = index;
+  }
+
+  // add new transaction
+  Future<void> addTransaction({required TransactionModel transaction}) async {
+    EasyLoading.show(status: "Loading...");
+    try {
+      await firestore
+          .collection(userCollection)
+          .doc(currentUser!.uid)
+          .collection(transactionCollection)
+          .add(transaction.toMap());
+      Get.snackbar("Success", "Transaction added successfully");
+    } catch (e) {
+      Get.snackbar("Error", "Failed to add transaction: $e");
+    } finally {
+      EasyLoading.dismiss();
+    }
   }
 }

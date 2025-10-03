@@ -1,3 +1,4 @@
+import 'package:expense_tracker/app/models/transaction_model.dart';
 import 'package:expense_tracker/app/modules/add_transaction/controllers/add_transaction_controller.dart';
 import 'package:expense_tracker/app/modules/add_transaction/widgets/transaction_button.dart';
 import 'package:expense_tracker/app/modules/auth/widgets/build_textfield.dart';
@@ -18,8 +19,8 @@ class AddTransactionView extends StatefulWidget {
 }
 
 class _AddTransactionViewState extends State<AddTransactionView> {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
 
   final controller = Get.find<AddTransactionController>();
 
@@ -34,8 +35,8 @@ class _AddTransactionViewState extends State<AddTransactionView> {
 
   @override
   void dispose() {
-    titleController.dispose();
-    amountController.dispose();
+    _titleController.dispose();
+    _amountController.dispose();
     super.dispose();
   }
 
@@ -46,7 +47,37 @@ class _AddTransactionViewState extends State<AddTransactionView> {
       appBar: AppBar(title: const Text('Add Transaction'), centerTitle: true),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: customButton(onTap: () {}, buttonText: "Save Transaction"),
+        child: customButton(
+          onTap: () async {
+            if (_titleController.text.trim().isEmpty) {
+              Get.snackbar("Error", "Title can't be empty");
+              return;
+            }
+            if (_amountController.text.trim().isEmpty) {
+              Get.snackbar("Error", "Amount can't be empty");
+              return;
+            }
+            if (controller.selectedTypeIndex.value == -1) {
+              Get.snackbar("Error", "Please select amount type");
+              return;
+            }
+            if (controller.selectedCategoryIndex.value == -1) {
+              Get.snackbar("Error", "Please select category");
+              return;
+            }
+
+            final transaction = TransactionModel(
+              title: _titleController.text,
+              amount: double.parse(_amountController.text),
+              type: transactionList[controller.selectedTypeIndex.value],
+              category: titleList[controller.selectedCategoryIndex.value],
+              date: controller.selectedDate.value,
+              createdAt: DateTime.now(),
+            );
+            await controller.addTransaction(transaction: transaction);
+          },
+          buttonText: "Save Transaction",
+        ),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -57,35 +88,37 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               Gap(10.h),
               //title text field
               buildTextField(
-                controller: TextEditingController(),
+                controller: _titleController,
                 hintText: "Title",
                 icon: Icons.note_add_outlined,
               ),
               Gap(10.h),
               //amount text field
               buildTextField(
-                controller: TextEditingController(),
+                controller: _amountController,
                 hintText: "Amount",
                 icon: Icons.currency_exchange_outlined,
                 inputType: TextInputType.number,
               ),
               Gap(20.h),
 
-              //expense and income button
               Obx(() {
                 return Row(
                   children: List.generate(transactionList.length, (index) {
-                    final type = transactionList[index].toLowerCase();
-                    final isSelected = controller.selectedType.value == type;
+                    final isSelected =
+                        controller.selectedTypeIndex.value == index;
 
                     return Expanded(
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 5.w),
                         child: transactionButton(
-                          onTap: () => controller.selectType(type),
+                          onTap: () => controller.selectType(index),
                           buttonText: transactionList[index],
                           backgroundColor: isSelected
-                              ? (type == 'income' ? Colors.green : Colors.red)
+                              ? (transactionList[index].toLowerCase() ==
+                                        'income'
+                                    ? Colors.green
+                                    : Colors.red)
                               : whiteColor,
                           fontColor: isSelected ? Colors.white : greyColor,
                         ),
@@ -95,6 +128,29 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                 );
               }),
 
+              //expense and income button
+              // Obx(() {
+              //   return Row(
+              //     children: List.generate(transactionList.length, (index) {
+              //       final type = transactionList[index].toLowerCase();
+              //       final isSelected = controller.selectedType.value == type;
+
+              //       return Expanded(
+              //         child: Padding(
+              //           padding: EdgeInsets.symmetric(horizontal: 5.w),
+              //           child: transactionButton(
+              //             onTap: () => controller.selectType(type),
+              //             buttonText: transactionList[index],
+              //             backgroundColor: isSelected
+              //                 ? (type == 'income' ? Colors.green : Colors.red)
+              //                 : whiteColor,
+              //             fontColor: isSelected ? Colors.white : greyColor,
+              //           ),
+              //         ),
+              //       );
+              //     }),
+              //   );
+              // }),
               Gap(20.h),
               //category section
               const Text(
