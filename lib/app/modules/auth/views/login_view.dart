@@ -1,3 +1,4 @@
+import 'package:expense_tracker/app/modules/auth/controllers/auth_controller.dart';
 import 'package:expense_tracker/app/modules/auth/widgets/build_textfield.dart';
 import 'package:expense_tracker/app/routes/app_pages.dart';
 import 'package:expense_tracker/core/app_images.dart';
@@ -18,6 +19,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  
+  final controller = Get.find<AuthController>();
 
   @override
   void dispose() {
