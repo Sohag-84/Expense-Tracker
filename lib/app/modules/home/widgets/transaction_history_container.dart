@@ -14,7 +14,6 @@ Widget transactionHistoryContainer({
   return Container(
     height: 60.h,
     alignment: Alignment.center,
-    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.circular(8.r),
       color: whiteColor,
