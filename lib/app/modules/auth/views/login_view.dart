@@ -19,7 +19,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  
+
   final controller = Get.find<AuthController>();
 
   @override
@@ -69,8 +69,19 @@ class _LoginViewState extends State<LoginView> {
               Gap(20.h),
               // Login Button
               customButton(
-                onTap: () {
-                  Get.toNamed(Routes.ADD_TRANSACTION);
+                onTap: () async {
+                  if (_emailController.text.trim().isEmpty) {
+                    Get.snackbar("Error", "Email can't be empty");
+                    return;
+                  }
+                  if (_passwordController.text.trim().isEmpty) {
+                    Get.snackbar("Error", "Password can't be empty");
+                    return;
+                  }
+                  await controller.login(
+                    email: _emailController.text,
+                    password: _passwordController.text,
+                  );
                 },
                 buttonText: "Login",
                 height: 48.h,

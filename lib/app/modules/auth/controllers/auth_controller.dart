@@ -38,6 +38,31 @@ class AuthController extends GetxController {
     }
   }
 
+  //user login
+  Future<void> login({required String email, required String password}) async {
+    EasyLoading.show(status: "Loading....");
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      Get.snackbar("Success", "Login successful");
+      Get.offAllNamed(Routes.HOME);
+    } on FirebaseAuthException catch (e) {
+      String error = _handleAuthError(e);
+      Get.snackbar("Error", error);
+    } catch (e) {
+      Get.snackbar("Error", e.toString());
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  //user logout
+  Future<void> logout() async {
+    await firebaseAuth.signOut();
+  }
+
   // error handler
   String _handleAuthError(FirebaseAuthException e) {
     switch (e.code) {
@@ -53,6 +78,12 @@ class AuthController extends GetxController {
         return "This email is already registered.";
       case "weak-password":
         return "Password should be at least 6 characters.";
+      case "invalid-credential":
+        return "Invalid Credential";
+      case "too-many-requests":
+        return "Too many login attempts. Try again later.";
+      case "network-request-failed":
+        return "Network error. Check your internet connection.";
       default:
         return "Something went wrong. Please try again.";
     }
