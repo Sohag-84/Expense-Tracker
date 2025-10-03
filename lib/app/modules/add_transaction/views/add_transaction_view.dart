@@ -74,7 +74,10 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               date: controller.selectedDate.value,
               createdAt: DateTime.now(),
             );
-            await controller.addTransaction(transaction: transaction);
+            await controller.addTransaction(
+              transaction: transaction,
+              context: context,
+            );
           },
           buttonText: "Save Transaction",
         ),
