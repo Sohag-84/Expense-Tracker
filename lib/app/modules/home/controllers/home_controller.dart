@@ -48,7 +48,8 @@ class HomeController extends GetxController {
           .map((doc) => TransactionModel.fromMap(doc.data(), doc.id))
           .toList();
 
-      calculateTotals(); // <-- Add this
+      //update total calculations
+      calculateTotals();
     } catch (e) {
       Get.snackbar("Error", "Failed to fetch transactions: $e");
     } finally {

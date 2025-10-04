@@ -124,17 +124,25 @@ class HomeView extends GetView<HomeController> {
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.only(bottom: 10.0),
-                                    child: transactionHistoryContainer(
-                                      title: txn.title,
-                                      type: txn.type,
-                                      date: formattedDate,
-                                      amount: txn.amount,
-                                      transactionColor: txn.type == 'Income'
-                                          ? Colors.green
-                                          : Colors.red,
-                                      icon: txn.type == "Income"
-                                          ? Icons.add
-                                          : Icons.remove,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(
+                                          Routes.ADD_TRANSACTION,
+                                          arguments: txn,
+                                        );
+                                      },
+                                      child: transactionHistoryContainer(
+                                        title: txn.title,
+                                        type: txn.type,
+                                        date: formattedDate,
+                                        amount: txn.amount,
+                                        transactionColor: txn.type == 'Income'
+                                            ? Colors.green
+                                            : Colors.red,
+                                        icon: txn.type == "Income"
+                                            ? Icons.add
+                                            : Icons.remove,
+                                      ),
                                     ),
                                   ),
                                 );

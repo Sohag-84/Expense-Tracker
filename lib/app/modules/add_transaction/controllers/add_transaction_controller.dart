@@ -42,7 +42,7 @@ class AddTransactionController extends GetxController {
     required TransactionModel transaction,
     required BuildContext context,
   }) async {
-    EasyLoading.show(status: "Loading...");
+    EasyLoading.show(status: "Adding...");
     try {
       await firestore
           .collection(userCollection)
@@ -54,6 +54,30 @@ class AddTransactionController extends GetxController {
       Navigator.pop(context);
     } catch (e) {
       Get.snackbar("Error", "Failed to add transaction: $e");
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  //update transaction
+  Future<void> updateTransaction({
+    required TransactionModel transaction,
+    required BuildContext context,
+  }) async {
+    EasyLoading.show(status: "Updating...");
+    try {
+      await firestore
+          .collection(userCollection)
+          .doc(currentUser!.uid)
+          .collection(transactionCollection)
+          .doc(transaction.id)
+          .update(transaction.toMap());
+
+      Get.snackbar("Success", "Transaction updated successfully");
+      Get.find<HomeController>().fetchTransactions();
+      Navigator.pop(context);
+    } catch (e) {
+      Get.snackbar("Error", "Failed to update transaction: $e");
     } finally {
       EasyLoading.dismiss();
     }

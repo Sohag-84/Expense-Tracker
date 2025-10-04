@@ -33,6 +33,34 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   final titleList = ["Food", "Salary", "Utilities", "Transport"];
   final transactionList = ["Expense", "Income"];
 
+  TransactionModel? editingTransaction;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final arg = Get.arguments;
+    if (arg != null && arg is TransactionModel) {
+      editingTransaction = arg;
+
+      _titleController.text = editingTransaction!.title;
+      _amountController.text = editingTransaction!.amount.toString();
+      controller.selectedDate.value = editingTransaction!.date;
+
+      // type set
+      final typeIndex = transactionList.indexOf(editingTransaction!.type);
+      if (typeIndex != -1) {
+        controller.selectedTypeIndex.value = typeIndex;
+      }
+
+      // category set
+      final categoryIndex = titleList.indexOf(editingTransaction!.category);
+      if (categoryIndex != -1) {
+        controller.selectedCategoryIndex.value = categoryIndex;
+      }
+    }
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -44,7 +72,12 @@ class _AddTransactionViewState extends State<AddTransactionView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(title: const Text('Add Transaction'), centerTitle: true),
+      appBar: AppBar(
+        title: Text(
+          editingTransaction == null ? "Add Transaction" : "Edit Transaction",
+        ),
+        centerTitle: true,
+      ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(8.0),
         child: customButton(
@@ -67,19 +100,32 @@ class _AddTransactionViewState extends State<AddTransactionView> {
             }
 
             final transaction = TransactionModel(
+              id: editingTransaction?.id ?? "",
               title: _titleController.text,
               amount: double.parse(_amountController.text),
               type: transactionList[controller.selectedTypeIndex.value],
               category: titleList[controller.selectedCategoryIndex.value],
               date: controller.selectedDate.value,
-              createdAt: DateTime.now(),
+              createdAt: editingTransaction?.createdAt ?? DateTime.now(),
             );
-            await controller.addTransaction(
-              transaction: transaction,
-              context: context,
-            );
+
+            if (editingTransaction == null) {
+              // add new transaction
+              await controller.addTransaction(
+                transaction: transaction,
+                context: context,
+              );
+            } else {
+              //update transaction
+              await controller.updateTransaction(
+                transaction: transaction,
+                context: context,
+              );
+            }
           },
-          buttonText: "Save Transaction",
+          buttonText: editingTransaction == null
+              ? "Save Transaction"
+              : "Update Transaction",
         ),
       ),
       body: SingleChildScrollView(
@@ -105,6 +151,7 @@ class _AddTransactionViewState extends State<AddTransactionView> {
               ),
               Gap(20.h),
 
+              //expense and income button
               Obx(() {
                 return Row(
                   children: List.generate(transactionList.length, (index) {
@@ -130,31 +177,8 @@ class _AddTransactionViewState extends State<AddTransactionView> {
                   }),
                 );
               }),
-
-              //expense and income button
-              // Obx(() {
-              //   return Row(
-              //     children: List.generate(transactionList.length, (index) {
-              //       final type = transactionList[index].toLowerCase();
-              //       final isSelected = controller.selectedType.value == type;
-
-              //       return Expanded(
-              //         child: Padding(
-              //           padding: EdgeInsets.symmetric(horizontal: 5.w),
-              //           child: transactionButton(
-              //             onTap: () => controller.selectType(type),
-              //             buttonText: transactionList[index],
-              //             backgroundColor: isSelected
-              //                 ? (type == 'income' ? Colors.green : Colors.red)
-              //                 : whiteColor,
-              //             fontColor: isSelected ? Colors.white : greyColor,
-              //           ),
-              //         ),
-              //       );
-              //     }),
-              //   );
-              // }),
               Gap(20.h),
+
               //category section
               const Text(
                 'Category',
