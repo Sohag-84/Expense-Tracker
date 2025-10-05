@@ -45,7 +45,7 @@ class HomeController extends GetxController {
           .get();
 
       transactions.value = snapshot.docs
-          .map((doc) => TransactionModel.fromMap(doc.data(), doc.id))
+          .map((doc) => TransactionModel.fromMap(doc.data()))
           .toList();
 
       //update total calculations

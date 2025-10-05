@@ -1,3 +1,4 @@
+import 'package:expense_tracker/app/modules/auth/controllers/auth_controller.dart';
 import 'package:expense_tracker/app/modules/home/widgets/balance_info_card.dart';
 import 'package:expense_tracker/app/modules/home/widgets/transaction_history_container.dart';
 import 'package:expense_tracker/app/routes/app_pages.dart';
@@ -17,7 +18,18 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      appBar: AppBar(title: const Text("Dashboard"), centerTitle: true),
+      appBar: AppBar(
+        title: const Text("Dashboard"),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await Get.find<AuthController>().logout();
+            },
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryColor,
         onPressed: () {
