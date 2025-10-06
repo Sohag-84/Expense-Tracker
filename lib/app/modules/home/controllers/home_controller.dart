@@ -11,10 +11,14 @@ class HomeController extends GetxController {
 
   RxBool isTransactionLoading = false.obs;
 
+  final RxString selectedCategory = 'All'.obs;
+
+  List<String> categories = ['All', 'Food', 'Salary', 'Utilities', 'Transport'];
+
   @override
   void onInit() {
-    super.onInit();
     fetchTransactions();
+    super.onInit();
   }
 
   void calculateTotals() {
@@ -35,20 +39,26 @@ class HomeController extends GetxController {
   }
 
   Future<void> fetchTransactions() async {
+    transactions.clear();
     isTransactionLoading.value = true;
+
     try {
+      final user = firebaseAuth.currentUser;
+      if (user == null) {
+        throw Exception("No user logged in.");
+      }
+
       final snapshot = await firestore
-          .collection('users')
-          .doc(currentUser!.uid)
-          .collection('transactions')
+          .collection(userCollection)
+          .doc(user.uid)
+          .collection(transactionCollection)
           .orderBy('date', descending: true)
           .get();
 
       transactions.value = snapshot.docs
-          .map((doc) => TransactionModel.fromMap(doc.data()))
+          .map((doc) => TransactionModel.fromMap(doc.data(), doc.id))
           .toList();
 
-      //update total calculations
       calculateTotals();
     } catch (e) {
       Get.snackbar("Error", "Failed to fetch transactions: $e");
@@ -72,5 +82,15 @@ class HomeController extends GetxController {
     } catch (e) {
       Get.snackbar("Error", "Failed to delete transaction: $e");
     }
+  }
+
+  //filter transactions by selected category
+  List<TransactionModel> get filteredTransactions {
+    if (selectedCategory.value == 'All') {
+      return transactions;
+    }
+    return transactions
+        .where((txn) => txn.category == selectedCategory.value)
+        .toList();
   }
 }

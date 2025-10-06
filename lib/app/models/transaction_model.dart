@@ -30,17 +30,17 @@ class TransactionModel {
     };
   }
 
-  factory TransactionModel.fromMap(Map<String, dynamic> map) {
-  return TransactionModel(
-    title: map['title'] ?? '',
-    amount: (map['amount'] as num).toDouble(),
-    type: map['type'] ?? '',
-    category: map['category'] ?? '',
-    date: (map['date'] as Timestamp).toDate(),
-    createdAt: (map['createdAt'] as Timestamp).toDate(),
-  );
-}
-
+  factory TransactionModel.fromMap(Map<String, dynamic> map, String docId) {
+    return TransactionModel(
+      id: docId,
+      title: map['title'] ?? '',
+      amount: (map['amount'] as num).toDouble(),
+      type: map['type'] ?? '',
+      category: map['category'] ?? '',
+      date: (map['date'] as Timestamp).toDate(),
+      createdAt: (map['createdAt'] as Timestamp).toDate(),
+    );
+  }
 
   // factory TransactionModel.fromMap(Map<String, dynamic> map, String docId) {
   //   return TransactionModel(

@@ -1,4 +1,3 @@
-import 'package:expense_tracker/app/modules/home/controllers/home_controller.dart';
 import 'package:expense_tracker/app/routes/app_pages.dart';
 import 'package:expense_tracker/core/constant/firebase_constant.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -62,7 +61,6 @@ class AuthController extends GetxController {
   //user logout
   Future<void> logout() async {
     await firebaseAuth.signOut();
-     Get.delete<HomeController>();
     Get.offAndToNamed(Routes.LOGIN);
   }
 
