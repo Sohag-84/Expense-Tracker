@@ -19,6 +19,15 @@ This app helps users **add, edit, delete, and view transactions (income & expens
 
 ---
 
+## 📸 Screenshots
+
+| Login | Signup | Dashboard | Add Transaction | Edit Transaction |
+|------|------|------|------|------|
+| ![Login](screenshots/login_page.png) | ![Signup](screenshots/signup.png) | ![Dashboard](screenshots/dashboard.png) | ![Add Transaction](screenshots/add_transaction.png) | ![Edit Transaction](screenshots/edit_transaction.png)  |
+
+---
+
+
 ## 🛠 Tech Stack
 - **Framework:** Flutter (Dart)
 - **State Management:** GetX
