@@ -44,6 +44,8 @@ class AddTransactionController extends GetxController {
   }) async {
     EasyLoading.show(status: "Adding...");
     try {
+      final currentUser = firebaseAuth.currentUser;
+
       await firestore
           .collection(userCollection)
           .doc(currentUser!.uid)

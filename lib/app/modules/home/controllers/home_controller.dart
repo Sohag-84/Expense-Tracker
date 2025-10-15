@@ -1,5 +1,6 @@
 import 'package:expense_tracker/app/models/transaction_model.dart';
 import 'package:expense_tracker/core/constant/firebase_constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class HomeController extends GetxController {
@@ -69,6 +70,8 @@ class HomeController extends GetxController {
 
   Future<void> deleteTransaction({required String transactionId}) async {
     try {
+      User? currentUser = firebaseAuth.currentUser;
+
       await firestore
           .collection(userCollection)
           .doc(currentUser!.uid)
